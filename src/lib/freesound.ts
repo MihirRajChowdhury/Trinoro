@@ -1,7 +1,7 @@
 // lib/freesound.ts
 
 const FREESOUND_BASE = "https://freesound.org/apiv2";
-const CLIENT_ID = "CRorG24623qAaa5ZLRf1107dwxtIWE13L7ymkm5I	"; // <-- insert your real client ID
+const CLIENT_ID = process.env.NEXT_PUBLIC_FREESOUND_CLIENT_ID || ""; // <-- now from env
 
 type Sound = {
   id: number;

@@ -22,26 +22,30 @@ interface AmbientSoundsState {
 
 export const useAmbientStore = create<AmbientSoundsState>((set, get) => ({
   sounds: [],
-  loading: true,
+  loading: false, // Start as false
   init: async (initialTags = ["forest"]) => {
     set({ loading: true });
-    const loadedSounds: AmbientSound[] = [];
-    for (const tag of initialTags) {
-      const result = await searchAmbientSound(tag);
-      if (result) {
-        const audio = new Audio(result.preview);
-        audio.loop = true;
-        audio.volume = 0.5;
-        loadedSounds.push({
-          name: tag,
-          preview: result.preview,
-          audio,
-          volume: 0.5,
-          isPlaying: false,
-        });
+    try {
+      const loadedSounds: AmbientSound[] = [];
+      for (const tag of initialTags) {
+        const result = await searchAmbientSound(tag);
+        if (result) {
+          const audio = new Audio(result.preview);
+          audio.loop = true;
+          audio.volume = 0.5;
+          loadedSounds.push({
+            name: tag,
+            preview: result.preview,
+            audio,
+            volume: 0.5,
+            isPlaying: false,
+          });
+        }
       }
+      set({ sounds: loadedSounds, loading: false });
+    } catch (e) {
+      set({ loading: false });
     }
-    set({ sounds: loadedSounds, loading: false });
   },
   toggle: (name: string) => {
     set((state) => ({
@@ -72,23 +76,31 @@ export const useAmbientStore = create<AmbientSoundsState>((set, get) => ({
     });
   },
   addSound: async (tag: string) => {
-    const result = await searchAmbientSound(tag);
-    if (result) {
-      const audio = new Audio(result.preview);
-      audio.loop = true;
-      audio.volume = 0.5;
-      set((state) => ({
-        sounds: [
-          ...state.sounds,
-          {
-            name: tag,
-            preview: result.preview,
-            audio,
-            volume: 0.5,
-            isPlaying: false,
-          },
-        ],
-      }));
+    set({ loading: true });
+    try {
+      const result = await searchAmbientSound(tag);
+      if (result) {
+        const audio = new Audio(result.preview);
+        audio.loop = true;
+        audio.volume = 0.5;
+        set((state) => ({
+          sounds: [
+            ...state.sounds,
+            {
+              name: tag,
+              preview: result.preview,
+              audio,
+              volume: 0.5,
+              isPlaying: false,
+            },
+          ],
+          loading: false,
+        }));
+      } else {
+        set({ loading: false });
+      }
+    } catch (e) {
+      set({ loading: false });
     }
   },
 }));
