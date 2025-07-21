@@ -3,6 +3,7 @@ import './globals.css'
 import { ReactNode } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import { Providers } from '@/components/Providers'
 
 export const metadata = {
   title: 'Trinoro',
@@ -33,10 +34,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           }}
         />
       </head>
-      <body className="bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark">  
-        <Header />
-        <main className="min-h-[80vh]">{children}</main>
-        <Footer />
+      <body className="bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark">
+        <Providers>
+          <Header />
+          <main className="min-h-[80vh]">{children}</main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   )
