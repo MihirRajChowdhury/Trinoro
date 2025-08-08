@@ -1,66 +1,88 @@
 import { create } from "zustand";
+import { useStreakStore } from "../../streak/utils/streakUtils";
+import React from "react";
 
 interface MeditationState {
   secondsLeft: number;
   isRunning: boolean;
-  duration: number; // in minutes
+  duration: number;
   start: () => void;
   pause: () => void;
-  reset: (newMinutes?: number) => void;
+  reset: (newDuration?: number) => void;
   setDuration: (minutes: number) => void;
+  completeSession: () => Promise<void>;
 }
-
-let interval: NodeJS.Timeout | null = null;
 
 export const useMeditationStore = create<MeditationState>((set, get) => ({
   secondsLeft: 0,
   isRunning: false,
-  duration: 10, // default duration in minutes
+  duration: 10,
+
   start: () => {
-    if (get().isRunning) return;
     set({ isRunning: true });
-    interval = setInterval(() => {
-      set((state) => {
-        if (state.secondsLeft <= 1) {
-          clearInterval(interval!);
-          interval = null;
-          return { ...state, isRunning: false, secondsLeft: 0 };
-        }
-        return { ...state, secondsLeft: state.secondsLeft - 1 };
-      });
-    }, 1000);
   },
+
   pause: () => {
-    if (interval) clearInterval(interval);
-    interval = null;
     set({ isRunning: false });
   },
-  reset: (newMinutes?: number) => {
-    if (interval) clearInterval(interval);
-    interval = null;
-    const minutes = newMinutes !== undefined ? newMinutes : get().duration;
-    set({ isRunning: false, secondsLeft: minutes * 60, duration: minutes });
+
+  reset: (newDuration?: number) => {
+    const duration = newDuration || get().duration;
+    set({ 
+      secondsLeft: duration * 60, 
+      isRunning: false,
+      duration 
+    });
   },
+
   setDuration: (minutes: number) => {
     set({ duration: minutes, secondsLeft: minutes * 60 });
   },
+
+  completeSession: async () => {
+    const { duration } = get();
+    const { recordSession } = useStreakStore.getState();
+    
+    try {
+      // Record the meditation session
+      await recordSession(duration);
+      console.log(`Meditation session completed: ${duration} minutes`);
+    } catch (error) {
+      console.error("Failed to record meditation session:", error);
+    }
+  },
 }));
 
-// Optional: legacy hook for compatibility
-export function useMeditation(durationInMinutes: number) {
-  const store = useMeditationStore();
-  // Sync duration if changed
-  if (store.duration !== durationInMinutes) {
-    store.setDuration(durationInMinutes);
-  }
-  const minutes = String(Math.floor(store.secondsLeft / 60)).padStart(2, "0");
-  const seconds = String(store.secondsLeft % 60).padStart(2, "0");
-  return {
-    minutes,
-    seconds,
-    isRunning: store.isRunning,
-    start: store.start,
-    pause: store.pause,
-    reset: store.reset,
-  };
-}
+// Timer effect hook
+export const useTimerEffect = () => {
+  const { secondsLeft, isRunning, completeSession } = useMeditationStore();
+  
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isRunning && secondsLeft > 0) {
+      interval = setInterval(() => {
+        useMeditationStore.setState((state) => {
+          const newSecondsLeft = state.secondsLeft - 1;
+          
+          // Session completed
+          if (newSecondsLeft === 0) {
+            completeSession();
+            return { 
+              secondsLeft: 0, 
+              isRunning: false 
+            };
+          }
+          
+          return { secondsLeft: newSecondsLeft };
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isRunning, secondsLeft, completeSession]);
+};

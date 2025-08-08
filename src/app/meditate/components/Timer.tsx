@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect } from "react";
-import { useMeditationStore } from "../utils/useMeditation";
+import { useMeditationStore, useTimerEffect } from "../utils/useMeditation";
 import { PlayCircle, PauseCircle, RotateCcw } from "lucide-react";
 
 type Props = {
@@ -18,6 +18,9 @@ export default function Timer({ duration }: Props) {
     duration: storeDuration,
   } = useMeditationStore();
   const initialized = useRef(false);
+
+  // Use the timer effect hook
+  useTimerEffect();
 
   // Ensure timer always displays the selected duration on initial render
   useEffect(() => {

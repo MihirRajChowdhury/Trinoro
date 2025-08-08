@@ -3,9 +3,11 @@ import { useState } from "react";
 import Timer from "./components/Timer";
 import SessionControls from "./components/SessionControls";
 import AmbientMixer from "./components/AmbientMixer";
+import BinauralBreathControls from "./components/BinauralBreathControls";
 
 export default function MeditatePage() {
   const [duration, setDuration] = useState(10); // default 10 min
+  const [binauralActive, setBinauralActive] = useState(false);
   
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-12 bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark transition-colors duration-300 overflow-hidden">
@@ -43,7 +45,14 @@ export default function MeditatePage() {
 
         {/* Timer Component */}
         <Timer duration={duration} />
-        <AmbientMixer />
+        <BinauralBreathControls onBinauralActive={setBinauralActive} />
+        {!binauralActive ? (
+          <AmbientMixer />
+        ) : (
+          <div className="w-full max-w-md mx-auto px-4 py-8 rounded-3xl bg-gradient-to-br from-emerald-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-800 dark:to-purple-900 shadow-xl dark:shadow-purple-900/30 border border-emerald-100/60 dark:border-purple-900/60 text-center text-lg text-purple-500 dark:text-purple-200">
+            Ambient sounds are disabled while Binaural Beats are active for best effect.
+          </div>
+        )}
 
         {/* Footer Message */}
         <div className="space-y-3 pt-8">
