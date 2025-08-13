@@ -1,5 +1,8 @@
 # Trinoro - Meditation & Wellness Platform
 
+<img width="1891" height="874" alt="Screenshot 2025-07-21 160904" src="https://github.com/user-attachments/assets/f75a837d-de94-47e8-9b19-872b354ae796" />
+
+
 A beautiful, feature-rich meditation and wellness application built with Next.js, featuring user authentication, streak tracking, journaling, and ambient sound mixing.
 
 ## ✨ Features
