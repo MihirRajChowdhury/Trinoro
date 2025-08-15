@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { useAmbientStore } from "@/hooks/useAmbientSounds";
 import { Pause, Play, X } from "lucide-react";
-
 export default function AmbientMixer() {
   const { sounds, loading, toggle, setVolume, remove, addSound, init } = useAmbientStore();
   const [searchTerm, setSearchTerm] = useState("");
