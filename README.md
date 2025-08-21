@@ -5,6 +5,8 @@
 
 A beautiful, feature-rich meditation and wellness application built with Next.js, featuring user authentication, streak tracking, journaling, and ambient sound mixing.
 
+You can see it at - https://trinoro.vercel.app/
+
 ## ✨ Features
 
 ### 🧘‍♀️ **Meditation**
