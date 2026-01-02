@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  trinoro:
+    container_name: trinoro
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - MONGODB_URI=${MONGODB_URI}
+      - GOOGLE_GENERATIVE_AI_API_KEY=${GOOGLE_GENERATIVE_AI_API_KEY}
+      - NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+      - NEXTAUTH_URL=${NEXTAUTH_URL}
+    networks:
+      - trinoro-network
+
+networks:
+  trinoro-network:
+    driver: bridge
