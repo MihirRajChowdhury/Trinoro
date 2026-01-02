@@ -10,6 +10,7 @@ type Props = {
 export default function SessionControls({ onChange, current }: Props) {
   const [inputValue, setInputValue] = useState<string | number>(current);
   const [invalid, setInvalid] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
     setInputValue(current);
@@ -23,6 +24,8 @@ export default function SessionControls({ onChange, current }: Props) {
       return;
     }
     onChange(val);
+    setShowFeedback(true);
+    setTimeout(() => setShowFeedback(false), 2000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +56,15 @@ export default function SessionControls({ onChange, current }: Props) {
       />
       <button
         onClick={handleSet}
-        className="w-full flex items-center justify-center gap-2 bg-gradient-to-br from-emerald-400 to-purple-400 dark:from-purple-700 dark:to-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:from-emerald-500 hover:to-purple-500 dark:hover:from-purple-600 dark:hover:to-emerald-400 transition disabled:opacity-60 text-base"
+        className="relative w-full flex items-center justify-center gap-2 bg-gradient-to-br from-emerald-400 to-purple-400 dark:from-purple-700 dark:to-emerald-500 text-white font-semibold py-3 rounded-lg shadow-md hover:from-emerald-500 hover:to-purple-500 dark:hover:from-purple-600 dark:hover:to-emerald-400 transition disabled:opacity-60 text-base"
       >
         <Clock className="w-5 h-5 text-white opacity-80" />
         Set Timer
+        {showFeedback && (
+          <span className="absolute right-4 text-xs bg-white text-emerald-600 px-2 py-1 rounded-full shadow-sm animate-fade-in-up">
+            Updated!
+          </span>
+        )}
       </button>
       <style>{`
         @keyframes shake {
@@ -66,6 +74,11 @@ export default function SessionControls({ onChange, current }: Props) {
           40%, 60% { transform: translateX(8px); }
         }
         .animate-shake { animation: shake 0.4s; }
+        @keyframes fadeInUp {
+          from { opacity: 0; transform: translateY(5px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.3s ease-out forwards; }
       `}</style>
     </div>
   );
