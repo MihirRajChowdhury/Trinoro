@@ -8,7 +8,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 export default function Header() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  
+
   const navLinks = [
     { href: "/meditate", label: "Meditate" },
     { href: "/journal", label: "Journal" },
@@ -17,9 +17,9 @@ export default function Header() {
 
   const handleSignIn = async () => {
     try {
-      await signIn("google", { 
+      await signIn("google", {
         callbackUrl: "/",
-        redirect: true 
+        redirect: true
       });
     } catch (error) {
       console.error("Sign in error:", error);
@@ -28,9 +28,9 @@ export default function Header() {
 
   const handleSignOut = async () => {
     try {
-      await signOut({ 
+      await signOut({
         callbackUrl: "/",
-        redirect: true 
+        redirect: true
       });
     } catch (error) {
       console.error("Sign out error:", error);
@@ -75,9 +75,9 @@ export default function Header() {
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-400 to-purple-400 flex items-center justify-center">
                 {session.user?.image ? (
-                  <img 
-                    src={session.user.image} 
-                    alt="Profile" 
+                  <img
+                    src={session.user.image}
+                    alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (

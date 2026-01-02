@@ -4,11 +4,12 @@ import Timer from "./components/Timer";
 import SessionControls from "./components/SessionControls";
 import AmbientMixer from "./components/AmbientMixer";
 import BinauralBreathControls from "./components/BinauralBreathControls";
+import ChatPopup from "./components/ChatPopup";
 
 export default function MeditatePage() {
-  const [duration, setDuration] = useState(10); // default 10 min
+  const [duration, setDuration] = useState(0); // default 10 min
   const [binauralActive, setBinauralActive] = useState(false);
-  
+
   return (
     <main className="relative flex min-h-screen flex-col items-center justify-center px-6 py-12 bg-backgroundLight text-textLight dark:bg-backgroundDark dark:text-textDark transition-colors duration-300 overflow-hidden">
       {/* Animated Background Elements */}
@@ -28,11 +29,11 @@ export default function MeditatePage() {
               Meditation Session
             </span>
           </div>
-          
+
           <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-amethyst via-purple-500 to-greenSoft dark:from-greenSoft dark:via-green-400 dark:to-amethyst bg-clip-text text-transparent">
             Find Your Center
           </h1>
-          
+
           <p className="text-base text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed">
             Take a moment to breathe deeply and connect with your inner peace
           </p>
@@ -70,6 +71,8 @@ export default function MeditatePage() {
       <div className="absolute top-20 left-20 w-1 h-1 bg-amethyst/50 rounded-full animate-ping"></div>
       <div className="absolute bottom-20 right-20 w-1 h-1 bg-greenSoft/50 rounded-full animate-ping" style={{ animationDelay: '1s' }}></div>
       <div className="absolute top-1/3 right-10 w-0.5 h-0.5 bg-purple-400/50 rounded-full animate-ping" style={{ animationDelay: '3s' }}></div>
+
+      <ChatPopup />
     </main>
   );
 }

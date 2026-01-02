@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 
 type Props = {
@@ -8,16 +8,34 @@ type Props = {
 };
 
 export default function SessionControls({ onChange, current }: Props) {
-  const [inputValue, setInputValue] = useState(current);
+  const [inputValue, setInputValue] = useState<string | number>(current);
   const [invalid, setInvalid] = useState(false);
 
+  useEffect(() => {
+    setInputValue(current);
+  }, [current]);
+
   const handleSet = () => {
-    if (inputValue < 1 || inputValue > 120) {
+    const val = Number(inputValue);
+    if (val < 1 || val > 120) {
       setInvalid(true);
       setTimeout(() => setInvalid(false), 600);
       return;
     }
-    onChange(inputValue);
+    onChange(val);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    if (val === "") {
+      setInputValue("");
+      return;
+    }
+    // Remove leading zeros
+    const num = parseInt(val, 10);
+    if (!isNaN(num)) {
+      setInputValue(num);
+    }
   };
 
   return (
@@ -27,11 +45,10 @@ export default function SessionControls({ onChange, current }: Props) {
         Session Duration (minutes)
       </label>
       <input
-        type="number"
-        min={1}
-        max={120}
+        type="text"
+        inputMode="numeric"
         value={inputValue}
-        onChange={(e) => setInputValue(Number(e.target.value))}
+        onChange={handleChange}
         className={`w-full px-5 py-3 rounded-lg bg-white/80 dark:bg-slate-800 border border-emerald-200 dark:border-purple-800 text-center text-lg text-emerald-700 dark:text-emerald-200 font-mono focus:outline-none focus:ring-2 focus:ring-purple-300 dark:focus:ring-purple-600 shadow-sm transition-all ${invalid ? 'border-red-400 dark:border-red-500 ring-red-200 dark:ring-red-400' : ''}`}
       />
       <button

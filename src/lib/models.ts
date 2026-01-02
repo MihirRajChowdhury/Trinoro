@@ -6,6 +6,8 @@ export interface User {
   name: string;
   image?: string;
   streakCount: number;
+  longestStreak: number;
+  lastMeditationDate?: Date;
   lastAccessDate: Date;
   totalMeditationMinutes: number;
   createdAt: Date;

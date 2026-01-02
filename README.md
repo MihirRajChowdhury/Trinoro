@@ -15,6 +15,11 @@ You can see it at - https://trinoro.vercel.app/
 - **Session Tracking**: Automatic recording of meditation sessions
 - **Binaural Beats**: Advanced meditation features (coming soon)
 
+### 🤖 **AI-Powered Custom Sessions**
+- **Personalized Experience**: Generate custom meditation sessions tailored to your needs using AI
+- **Smart Generation**: Input your current mood or goals for a tailored experience
+- **Dynamic Content**: Unique sessions created on-demand powered by Google Gemini
+
 ### 🎵 **Ambient Sound Mixer**
 - **Freesound Integration**: Access to thousands of ambient sounds
 - **Custom Mixing**: Combine multiple sounds with individual volume control
@@ -44,6 +49,8 @@ You can see it at - https://trinoro.vercel.app/
 - **State Management**: Zustand for global state
 - **Authentication**: NextAuth.js with MongoDB adapter
 - **Database**: MongoDB for user data and session storage
+- **AI**: Google Generative AI (Gemini)
+- **Containerization**: Docker support
 - **Audio**: HTML5 Audio API with Freesound integration
 - **Icons**: Lucide React
 
@@ -87,6 +94,9 @@ You can see it at - https://trinoro.vercel.app/
    # Freesound API (optional)
    FREESOUND_CLIENT_ID=your-freesound-client-id
    FREESOUND_CLIENT_SECRET=your-freesound-client-secret
+
+   # Google Gemini AI
+   GOOGLE_GENERATIVE_AI_API_KEY=your-gemini-api-key
    ```
 
 4. **Run the development server**
@@ -99,7 +109,23 @@ You can see it at - https://trinoro.vercel.app/
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📁 Project Structure
+### � Run with Docker
+
+1. **Verify Prerequisites**
+   Ensure Docker and Docker Compose are installed on your machine.
+
+2. **Environment Setup**
+   Ensure your `.env.local` or `.env` file is configured as above, including `GOOGLE_GENERATIVE_AI_API_KEY`.
+
+3. **Build and Run**
+   ```bash
+   docker-compose up -d --build
+   ```
+
+4. **Access Application**
+   The application will be available at [http://localhost:3000](http://localhost:3000)
+
+## �📁 Project Structure
 
 ```
 src/
@@ -172,6 +198,7 @@ This project is licensed under the MIT License.
 ## 🙏 Acknowledgments
 
 - [Freesound](https://freesound.org/) for ambient sound API
+- [Google AI](https://ai.google.dev/) for generative capabilities
 - [NextAuth.js](https://next-auth.js.org/) for authentication
 - [Tailwind CSS](https://tailwindcss.com/) for styling
 - [Lucide](https://lucide.dev/) for beautiful icons

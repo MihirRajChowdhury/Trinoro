@@ -36,7 +36,9 @@ export default function Timer({ duration }: Props) {
   }, [duration]);
 
   // Calculate progress percentage for the circular progress indicator
-  const totalSeconds = duration * 60;
+  // Use storeDuration to ensure totalSeconds matches the current secondsLeft from store
+  // This prevents visual glitches (e.g. half-filled circle) when duration prop changes but store hasn't updated yet
+  const totalSeconds = storeDuration * 60;
   const remainingSeconds = secondsLeft;
   const progress = ((totalSeconds - remainingSeconds) / totalSeconds) * 100;
 
